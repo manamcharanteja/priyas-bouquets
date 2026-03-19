@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import AdminLayout from '@/components/AdminLayout';
 
 export const metadata: Metadata = {
-  title: "Admin | Priya's Bouquets",
+  title: "Admin | True Spark",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -40,7 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Flower2 size={20} className="text-white" />
             </div>
             <div>
-              <p className="font-serif font-bold">Priya's</p>
+              <p className="font-serif font-bold">True Spark</p>
               <p className="text-gold-400 text-xs tracking-widest uppercase">Admin</p>
             </div>
           </div>

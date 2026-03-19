@@ -20,7 +20,7 @@ export default function OrderConfirmationPage() {
         <CheckCircle size={48} className="text-green-500" />
       </div>
       <h1 className="font-serif text-3xl font-bold text-gray-800 mb-3">Order Confirmed!</h1>
-      <p className="text-gray-600 mb-2">Thank you for shopping with Priya's Bouquets 🌸</p>
+      <p className="text-gray-600 mb-2">Thank you for shopping with True Spark 🌸</p>
       {order && (
         <p className="text-maroon-700 font-semibold text-lg mb-8">Order ID: #{order.orderId}</p>
       )}

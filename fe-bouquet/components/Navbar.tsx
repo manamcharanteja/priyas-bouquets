@@ -20,7 +20,7 @@ export default function Navbar() {
             </div>
             <div>
               <span className="font-serif text-maroon-700 font-bold text-lg leading-none block">
-                Priya's
+                True Spark
               </span>
               <span className="text-gold-500 text-xs font-medium tracking-widest uppercase">
                 Bouquets

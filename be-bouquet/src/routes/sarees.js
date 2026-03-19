@@ -92,7 +92,7 @@ router.delete('/:id', protect, async (req, res) => {
     // Delete images from Cloudinary
     for (const imageUrl of saree.images) {
       const publicId = imageUrl.split('/').pop().split('.')[0];
-      await cloudinary.uploader.destroy(`priyas-bouquets/${publicId}`);
+      await cloudinary.uploader.destroy(`true-spark/${publicId}`);
     }
 
     res.json({ message: 'Saree deleted' });

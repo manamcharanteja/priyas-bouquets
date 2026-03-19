@@ -5,7 +5,7 @@ import { sareeAPI } from '@/lib/api';
 import SareeCard from '@/components/SareeCard';
 import { Search, SlidersHorizontal } from 'lucide-react';
 
-const CATEGORIES = ['All', 'Bouquet Set', 'Kanchipuram', 'Banarasi', 'Silk', 'Cotton', 'Designer', 'Other'];
+const CATEGORIES = ['All', 'Pre-Wedding Outfits', 'Designer Wear Dresses', 'Mom & Daughter Combos', 'Maggam Work Blouses', 'Lehengas'];
 
 export default function SareesPage() {
   const [sarees, setSarees] = useState<any[]>([]);

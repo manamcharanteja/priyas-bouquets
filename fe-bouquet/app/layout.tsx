@@ -5,9 +5,9 @@ import Footer from '@/components/Footer';
 import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
-  title: "Priya's Bouquets | Handcrafted Saree Bouquets",
+  title: "True Spark | Handcrafted Saree Bouquets",
   description:
-    "Beautiful handcrafted saree bouquets and designer sarees. Perfect gifting for every occasion. Shop Priya's Bouquets.",
+    "Beautiful handcrafted saree bouquets and designer sarees. Perfect gifting for every occasion. Shop True Spark.",
   keywords: 'saree bouquet, designer sarees, handcrafted bouquets, silk sarees, saree gifts',
 };
 

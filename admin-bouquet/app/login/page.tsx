@@ -34,7 +34,7 @@ export default function LoginPage() {
           <div className="w-16 h-16 bg-gradient-to-br from-maroon-700 to-gold-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <Flower2 size={30} className="text-white" />
           </div>
-          <h1 className="font-serif text-2xl font-bold text-gray-800">Priya's Bouquets</h1>
+          <h1 className="font-serif text-2xl font-bold text-gray-800">True Spark</h1>
           <p className="text-gray-400 text-sm mt-1">Admin Portal</p>
         </div>
 

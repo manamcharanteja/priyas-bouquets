@@ -13,7 +13,7 @@ export default function Footer() {
                 <Flower2 size={20} className="text-white" />
               </div>
               <div>
-                <span className="font-serif font-bold text-lg">Priya's</span>
+                <span className="font-serif font-bold text-lg">True Spark</span>
                 <span className="text-gold-400 text-xs block tracking-widest uppercase">Bouquets</span>
               </div>
             </div>
@@ -55,7 +55,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-maroon-600 mt-8 pt-6 text-center text-amber-200 text-sm">
-          <p>&copy; {new Date().getFullYear()} Priya's Bouquets. All rights reserved. Made with love 🌸</p>
+          <p>&copy; {new Date().getFullYear()} True Spark. All rights reserved. Made with love 🌸</p>
         </div>
       </div>
     </footer>

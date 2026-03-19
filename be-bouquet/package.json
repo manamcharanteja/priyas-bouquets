@@ -1,7 +1,7 @@
 {
   "name": "be-bouquet",
   "version": "1.0.0",
-  "description": "Priya's Bouquets - Backend API",
+  "description": "True Spark - Backend API",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",

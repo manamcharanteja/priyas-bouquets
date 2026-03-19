@@ -8,8 +8,8 @@ const sareeSchema = new mongoose.Schema(
     discountedPrice: { type: Number },
     category: {
       type: String,
-      enum: ['Bouquet Set', 'Kanchipuram', 'Banarasi', 'Silk', 'Cotton', 'Designer', 'Other'],
-      default: 'Other',
+      enum: ['Pre-Wedding Outfits', 'Designer Wear Dresses', 'Mom & Daughter Combos', 'Maggam Work Blouses', 'Lehengas'],
+      default: 'Designer Wear Dresses',
     },
     colors: [{ type: String }],
     images: [{ type: String }], // Cloudinary URLs

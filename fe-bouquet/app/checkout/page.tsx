@@ -40,7 +40,7 @@ export default function CheckoutPage() {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
           amount: rzpOrder.amount,
           currency: 'INR',
-          name: "Priya's Bouquets",
+          name: "True Spark",
           description: 'Saree Purchase',
           order_id: rzpOrder.id,
           prefill: { name: form.name, email: form.email, contact: form.phone },

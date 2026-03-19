@@ -21,13 +21,13 @@ const sendOrderConfirmationToCustomer = async (order) => {
     .join('');
 
   await transporter.sendMail({
-    from: `"Priya's Bouquets" <${process.env.EMAIL_USER}>`,
+    from: `"True Spark" <${process.env.EMAIL_USER}>`,
     to: order.customer.email,
-    subject: `Order Confirmed - ${order.orderId} | Priya's Bouquets`,
+    subject: `Order Confirmed - ${order.orderId} | True Spark`,
     html: `
       <div style="font-family:Georgia,serif;max-width:600px;margin:auto;background:#fff;border:1px solid #e8d5b7;border-radius:8px;overflow:hidden;">
         <div style="background:linear-gradient(135deg,#8B1A1A,#C4760A);padding:30px;text-align:center;">
-          <h1 style="color:#fff;margin:0;font-size:28px;">🌸 Priya's Bouquets</h1>
+          <h1 style="color:#fff;margin:0;font-size:28px;">🌸 True Spark</h1>
           <p style="color:#f5e6c8;margin:5px 0 0;">Thank you for your order!</p>
         </div>
         <div style="padding:30px;">
@@ -58,7 +58,7 @@ const sendOrderConfirmationToCustomer = async (order) => {
           <p style="color:#8B1A1A;font-style:italic;">With love, Priya 🌸</p>
         </div>
         <div style="background:#f5e6c8;padding:15px;text-align:center;">
-          <p style="margin:0;color:#8B1A1A;font-size:13px;">Priya's Bouquets | manamteja021@gmail.com</p>
+          <p style="margin:0;color:#8B1A1A;font-size:13px;">True Spark | manamteja021@gmail.com</p>
         </div>
       </div>`,
   });
@@ -68,7 +68,7 @@ const sendNewOrderAlertToAdmin = async (order) => {
   const itemsList = order.items.map((i) => `${i.name} x${i.qty} = ₹${i.price * i.qty}`).join('\n');
 
   await transporter.sendMail({
-    from: `"Priya's Bouquets System" <${process.env.EMAIL_USER}>`,
+    from: `"True Spark System" <${process.env.EMAIL_USER}>`,
     to: process.env.ADMIN_EMAIL,
     subject: `🛍️ New Order #${order.orderId} - ₹${order.totalAmount}`,
     html: `
@@ -101,13 +101,13 @@ const sendOrderStatusUpdate = async (order) => {
   };
 
   await transporter.sendMail({
-    from: `"Priya's Bouquets" <${process.env.EMAIL_USER}>`,
+    from: `"True Spark" <${process.env.EMAIL_USER}>`,
     to: order.customer.email,
-    subject: `Order Update #${order.orderId} - ${order.orderStatus.toUpperCase()} | Priya's Bouquets`,
+    subject: `Order Update #${order.orderId} - ${order.orderStatus.toUpperCase()} | True Spark`,
     html: `
       <div style="font-family:Georgia,serif;max-width:600px;margin:auto;background:#fff;border:1px solid #e8d5b7;border-radius:8px;overflow:hidden;">
         <div style="background:linear-gradient(135deg,#8B1A1A,#C4760A);padding:30px;text-align:center;">
-          <h1 style="color:#fff;margin:0;font-size:24px;">🌸 Priya's Bouquets</h1>
+          <h1 style="color:#fff;margin:0;font-size:24px;">🌸 True Spark</h1>
         </div>
         <div style="padding:30px;">
           <p style="color:#4a3728;">Dear <strong>${order.customer.name}</strong>,</p>

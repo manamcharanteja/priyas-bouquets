@@ -20,7 +20,7 @@ app.use('/api/sarees', require('./routes/sarees'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/payment', paymentRoutes);
 
-app.get('/health', (req, res) => res.json({ status: 'ok', name: "Priya's Bouquets API" }));
+app.get('/health', (req, res) => res.json({ status: 'ok', name: "True Spark API" }));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

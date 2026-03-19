@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
             <Flower2 size={32} className="text-white" />
           </div>
           <h1 className="font-serif text-2xl font-bold text-gray-800">Admin Portal</h1>
-          <p className="text-gray-500 text-sm mt-1">Priya's Bouquets</p>
+          <p className="text-gray-500 text-sm mt-1">True Spark</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">

@@ -29,7 +29,7 @@ export default function Sidebar() {
             <Flower2 size={18} className="text-white" />
           </div>
           <div>
-            <p className="font-serif font-bold text-base leading-tight">Priya's Bouquets</p>
+            <p className="font-serif font-bold text-base leading-tight">True Spark</p>
             <p className="text-xs text-amber-300 tracking-widest uppercase">Admin</p>
           </div>
         </div>
