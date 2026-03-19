@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import Image from 'next/image';
 import { Upload, X, Plus } from 'lucide-react';
 
-const CATEGORIES = ['Bouquet Set', 'Kanchipuram', 'Banarasi', 'Silk', 'Cotton', 'Designer', 'Other'];
+const CATEGORIES = ['Pre-Wedding Outfits', 'Designer Wear Dresses', 'Mom & Daughter Combos', 'Maggam Work Blouses', 'Lehengas'];
 
 interface Props {
   saree?: any;

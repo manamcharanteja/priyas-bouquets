@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { Upload, X, Plus, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-const CATEGORIES = ['Bouquet Set', 'Kanchipuram', 'Banarasi', 'Silk', 'Cotton', 'Designer', 'Other'];
+const CATEGORIES = ['Pre-Wedding Outfits', 'Designer Wear Dresses', 'Mom & Daughter Combos', 'Maggam Work Blouses', 'Lehengas'];
 
 export default function AddSareePage() {
   const router = useRouter();
