@@ -13,7 +13,7 @@ const paymentRoutes = require('./routes/payment');
 app.use('/api/payment/webhook', express.raw({ type: 'application/json' }));
 
 app.use(cors({
-  origin: ['http://localhost:3001', 'http://localhost:3002', process.env.FRONTEND_URL].filter(Boolean),
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', process.env.FRONTEND_URL].filter(Boolean),
   credentials: true,
 }));
 app.use(express.json());
