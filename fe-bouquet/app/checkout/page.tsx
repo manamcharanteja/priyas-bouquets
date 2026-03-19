@@ -6,10 +6,10 @@ import { useCartStore } from '@/lib/cart-store';
 import { paymentAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
+import Image from 'next/image';
+import { ShieldCheck, Truck, ArrowRight } from 'lucide-react';
 
-declare global {
-  interface Window { Razorpay: any; }
-}
+declare global { interface Window { Razorpay: any; } }
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -27,21 +27,18 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (items.length === 0) return toast.error('Your cart is empty');
     setLoading(true);
-
     try {
       const { data: rzpOrder } = await paymentAPI.createOrder(totalAmount());
-
       const script = document.createElement('script');
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       document.body.appendChild(script);
-
       script.onload = () => {
-        const options = {
+        const rzp = new window.Razorpay({
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
           amount: rzpOrder.amount,
           currency: 'INR',
-          name: "True Spark",
-          description: 'Saree Purchase',
+          name: 'True Spark',
+          description: 'Fashion Purchase',
           order_id: rzpOrder.id,
           prefill: { name: form.name, email: form.email, contact: form.phone },
           theme: { color: '#8B1A1A' },
@@ -52,104 +49,131 @@ export default function CheckoutPage() {
                   name: form.name, email: form.email, phone: form.phone,
                   address: { line1: form.line1, line2: form.line2, city: form.city, state: form.state, pincode: form.pincode },
                 },
-                items: items.map((i) => ({
-                  sareeId: i.sareeId, name: i.name, price: i.price, qty: i.qty, imageUrl: i.imageUrl,
-                })),
+                items: items.map((i) => ({ sareeId: i.sareeId, name: i.name, price: i.price, qty: i.qty, imageUrl: i.imageUrl })),
                 totalAmount: totalAmount(),
               };
-
               const { data } = await paymentAPI.verify({
                 razorpayOrderId: response.razorpay_order_id,
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
                 orderData,
               });
-
               clearCart();
               router.push(`/order/${data._id}`);
-            } catch {
-              toast.error('Payment verification failed. Contact support.');
-            }
+            } catch { toast.error('Payment verification failed. Contact support.'); }
           },
           modal: { ondismiss: () => { setLoading(false); toast.error('Payment cancelled'); } },
-        };
-
-        const rzp = new window.Razorpay(options);
+        });
         rzp.open();
       };
-    } catch (err) {
+    } catch {
       toast.error('Could not initiate payment. Please try again.');
       setLoading(false);
     }
   };
 
   if (items.length === 0) return (
-    <div className="max-w-xl mx-auto px-4 py-20 text-center">
-      <p className="text-gray-600 mb-4">No items in cart.</p>
+    <div className="min-h-[60vh] flex flex-col items-center justify-center px-4">
+      <p className="text-gray-500 mb-4">No items in cart.</p>
       <Link href="/sarees" className="btn-primary inline-block">Shop Now</Link>
     </div>
   );
 
+  const subtotal = totalAmount();
+
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="font-serif text-3xl font-bold text-gray-800 mb-8">Checkout</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {/* Form */}
-        <form onSubmit={handlePay} className="space-y-5">
-          <div className="card p-6">
-            <h2 className="font-serif text-xl font-semibold mb-4 text-gray-800">Delivery Details</h2>
-            <div className="space-y-4">
-              {[
-                { label: 'Full Name', name: 'name', type: 'text', required: true },
-                { label: 'Email Address', name: 'email', type: 'email', required: true },
-                { label: 'Phone Number', name: 'phone', type: 'tel', required: true },
-                { label: 'Address Line 1', name: 'line1', type: 'text', required: true },
-                { label: 'Address Line 2 (optional)', name: 'line2', type: 'text', required: false },
-                { label: 'City', name: 'city', type: 'text', required: true },
-                { label: 'State', name: 'state', type: 'text', required: true },
-                { label: 'Pincode', name: 'pincode', type: 'text', required: true },
-              ].map((field) => (
-                <div key={field.name}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}</label>
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    value={(form as any)[field.name]}
-                    onChange={handleChange}
-                    required={field.required}
-                    className="w-full px-4 py-3 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon-700 bg-white"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="font-serif text-2xl font-bold text-gray-800 mb-6">Checkout</h1>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-maroon-700 text-white py-4 rounded-xl font-semibold text-lg hover:bg-maroon-800 transition-colors disabled:opacity-60"
-          >
-            {loading ? 'Processing...' : `Pay ₹${totalAmount().toLocaleString()} via UPI`}
-          </button>
-        </form>
-
-        {/* Order Summary */}
-        <div className="card p-6 h-fit">
-          <h2 className="font-serif text-xl font-semibold mb-4 text-gray-800">Order Summary</h2>
-          <div className="space-y-3 mb-4">
-            {items.map((item) => (
-              <div key={item.sareeId} className="flex justify-between text-sm text-gray-600">
-                <span className="flex-1 mr-2 line-clamp-1">{item.name} x{item.qty}</span>
-                <span>₹{(item.price * item.qty).toLocaleString()}</span>
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          {/* Left: Delivery form */}
+          <form onSubmit={handlePay} className="flex-1 space-y-4">
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+              <h2 className="font-semibold text-gray-800 mb-4">Delivery Details</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  { label: 'Full Name', name: 'name', type: 'text', required: true, col: 'sm:col-span-2' },
+                  { label: 'Email Address', name: 'email', type: 'email', required: true, col: '' },
+                  { label: 'Phone Number', name: 'phone', type: 'tel', required: true, col: '' },
+                  { label: 'Address Line 1', name: 'line1', type: 'text', required: true, col: 'sm:col-span-2' },
+                  { label: 'Address Line 2 (optional)', name: 'line2', type: 'text', required: false, col: 'sm:col-span-2' },
+                  { label: 'City', name: 'city', type: 'text', required: true, col: '' },
+                  { label: 'State', name: 'state', type: 'text', required: true, col: '' },
+                  { label: 'Pincode', name: 'pincode', type: 'text', required: true, col: '' },
+                ].map((f) => (
+                  <div key={f.name} className={f.col}>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">{f.label}</label>
+                    <input
+                      type={f.type} name={f.name}
+                      value={(form as any)[f.name]}
+                      onChange={handleChange} required={f.required}
+                      className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-maroon-700 bg-white"
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="border-t border-amber-100 pt-3">
-            <div className="flex justify-between font-bold text-lg text-gray-800">
-              <span>Total</span>
-              <span className="text-maroon-700">₹{totalAmount().toLocaleString()}</span>
             </div>
-            <p className="text-xs text-gray-400 mt-2">Payment via UPI (GPay, PhonePe, Paytm, etc.)</p>
+
+            <button type="submit" disabled={loading}
+              className="w-full bg-maroon-700 text-white py-3.5 rounded-xl font-semibold text-sm hover:bg-maroon-800 transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
+              <ShieldCheck size={17} />
+              {loading ? 'Processing...' : `Pay ₹${subtotal.toLocaleString()} via UPI`}
+            </button>
+
+            <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
+              <span className="flex items-center gap-1"><ShieldCheck size={13} /> Secure Payment</span>
+              <span className="flex items-center gap-1"><Truck size={13} /> Free Delivery</span>
+            </div>
+          </form>
+
+          {/* Right: Order Summary */}
+          <div className="lg:w-80 xl:w-96 sticky top-20">
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+              <div className="px-5 py-4 border-b border-gray-100">
+                <h2 className="font-semibold text-gray-800 text-sm">Order Summary ({items.length} item{items.length > 1 ? 's' : ''})</h2>
+              </div>
+
+              {/* Items */}
+              <div className="divide-y divide-gray-50">
+                {items.map((item) => (
+                  <div key={item.sareeId} className="px-5 py-3 flex gap-3 items-center">
+                    <div className="relative w-12 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-gray-50">
+                      {item.imageUrl
+                        ? <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
+                        : <div className="w-full h-full flex items-center justify-center text-lg">🌸</div>}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-gray-700 line-clamp-2 leading-snug">{item.name}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">Qty: {item.qty}</p>
+                    </div>
+                    <span className="text-sm font-semibold text-gray-800 whitespace-nowrap">
+                      ₹{(item.price * item.qty).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Totals */}
+              <div className="px-5 py-4 border-t border-gray-100 space-y-2">
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Subtotal</span><span>₹{subtotal.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>Shipping</span><span className="text-green-600 font-medium">Free</span>
+                </div>
+                <div className="flex justify-between font-bold text-gray-800 pt-2 border-t border-gray-100">
+                  <span>Total</span>
+                  <span className="text-maroon-700 text-base">₹{subtotal.toLocaleString()}</span>
+                </div>
+              </div>
+
+              <div className="px-5 pb-4">
+                <p className="text-xs text-gray-400 text-center">
+                  Supports GPay, PhonePe, Paytm & all UPI apps
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

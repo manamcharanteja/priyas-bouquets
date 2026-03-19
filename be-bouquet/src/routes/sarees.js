@@ -1,16 +1,23 @@
 const express = require('express');
+const path = require('path');
 const Saree = require('../models/Saree');
 const { protect } = require('../middleware/authMiddleware');
 const { upload, cloudinary } = require('../config/cloudinary');
 
 const router = express.Router();
 
+// Convert local file path → public URL
+const toImageUrl = (file) => {
+  if (file.path && file.path.startsWith('http')) return file.path; // Cloudinary URL
+  const filename = path.basename(file.path);
+  return `${process.env.BACKEND_URL || 'http://localhost:5000'}/uploads/${filename}`;
+};
+
 // GET /api/sarees - public, with filters
 router.get('/', async (req, res) => {
   try {
     const { category, featured, search, minPrice, maxPrice, inStock } = req.query;
     const filter = {};
-
     if (category) filter.category = category;
     if (featured === 'true') filter.featured = true;
     if (inStock === 'true') filter.inStock = true;
@@ -20,7 +27,6 @@ router.get('/', async (req, res) => {
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
-
     const sarees = await Saree.find(filter).sort({ createdAt: -1 });
     res.json(sarees);
   } catch (err) {
@@ -39,19 +45,14 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/sarees - admin only, with image upload
+// POST /api/sarees - admin only
 router.post('/', protect, upload.array('images', 5), async (req, res) => {
   try {
-    const images = req.files.map((f) => f.path);
+    const images = (req.files || []).map(toImageUrl);
     const colors = req.body.colors ? JSON.parse(req.body.colors) : [];
     const tags = req.body.tags ? JSON.parse(req.body.tags) : [];
 
-    const saree = await Saree.create({
-      ...req.body,
-      colors,
-      tags,
-      images,
-    });
+    const saree = await Saree.create({ ...req.body, colors, tags, images });
     res.status(201).json(saree);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -64,11 +65,8 @@ router.put('/:id', protect, upload.array('images', 5), async (req, res) => {
     const saree = await Saree.findById(req.params.id);
     if (!saree) return res.status(404).json({ message: 'Saree not found' });
 
-    const newImages = req.files.map((f) => f.path);
-    const existingImages = req.body.existingImages
-      ? JSON.parse(req.body.existingImages)
-      : saree.images;
-
+    const newImages = (req.files || []).map(toImageUrl);
+    const existingImages = req.body.existingImages ? JSON.parse(req.body.existingImages) : saree.images;
     const colors = req.body.colors ? JSON.parse(req.body.colors) : saree.colors;
     const tags = req.body.tags ? JSON.parse(req.body.tags) : saree.tags;
 
@@ -89,13 +87,17 @@ router.delete('/:id', protect, async (req, res) => {
     const saree = await Saree.findByIdAndDelete(req.params.id);
     if (!saree) return res.status(404).json({ message: 'Saree not found' });
 
-    // Delete images from Cloudinary
-    for (const imageUrl of saree.images) {
-      const publicId = imageUrl.split('/').pop().split('.')[0];
-      await cloudinary.uploader.destroy(`true-spark/${publicId}`);
+    // Delete from Cloudinary if configured
+    if (cloudinary) {
+      for (const imageUrl of saree.images) {
+        if (imageUrl.includes('cloudinary')) {
+          const publicId = imageUrl.split('/').pop().split('.')[0];
+          await cloudinary.uploader.destroy(`true-spark/${publicId}`).catch(() => {});
+        }
+      }
     }
 
-    res.json({ message: 'Saree deleted' });
+    res.json({ message: 'Deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
