@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
 import { sareeAPI } from '@/lib/api';
 import SareeCard from '@/components/SareeCard';
