@@ -18,7 +18,7 @@ export default function AddSareePage() {
   const [tagInput, setTagInput] = useState('');
   const [form, setForm] = useState({
     name: '', description: '', price: '', discountedPrice: '',
-    category: 'Other', colors: [] as string[], tags: [] as string[],
+    category: 'Designer Wear Dresses', colors: [] as string[], tags: [] as string[],
     inStock: true, stockCount: '1', featured: false,
   });
 

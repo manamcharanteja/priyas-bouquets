@@ -45,14 +45,19 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+const VALID_CATEGORIES = ['Pre-Wedding Outfits', 'Designer Wear Dresses', 'Mom & Daughter Combos', 'Maggam Work Blouses', 'Lehengas'];
+
 // POST /api/sarees - admin only
 router.post('/', protect, upload.array('images', 5), async (req, res) => {
   try {
     const images = (req.files || []).map(toImageUrl);
     const colors = req.body.colors ? JSON.parse(req.body.colors) : [];
     const tags = req.body.tags ? JSON.parse(req.body.tags) : [];
+    const category = VALID_CATEGORIES.includes(req.body.category)
+      ? req.body.category
+      : 'Designer Wear Dresses';
 
-    const saree = await Saree.create({ ...req.body, colors, tags, images });
+    const saree = await Saree.create({ ...req.body, category, colors, tags, images });
     res.status(201).json(saree);
   } catch (err) {
     res.status(500).json({ message: err.message });
