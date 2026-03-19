@@ -55,7 +55,7 @@ const sendOrderConfirmationToCustomer = async (order) => {
             ${order.customer.address.city}, ${order.customer.address.state} - ${order.customer.address.pincode}</p>
           </div>
           <p style="color:#4a3728;">We'll notify you when your order is packed and shipped. For any queries, reply to this email.</p>
-          <p style="color:#8B1A1A;font-style:italic;">With love, Priya 🌸</p>
+          <p style="color:#8B1A1A;font-style:italic;">With love, True Spark Team 🌸</p>
         </div>
         <div style="background:#f5e6c8;padding:15px;text-align:center;">
           <p style="margin:0;color:#8B1A1A;font-size:13px;">True Spark | manamteja021@gmail.com</p>
@@ -114,7 +114,7 @@ const sendOrderStatusUpdate = async (order) => {
           <p style="color:#4a3728;">${statusMessages[order.orderStatus] || 'Your order status has been updated.'}</p>
           <p style="color:#4a3728;"><strong>Order ID:</strong> ${order.orderId}</p>
           <p style="color:#4a3728;"><strong>Status:</strong> <span style="color:#8B1A1A;font-weight:bold;">${order.orderStatus.toUpperCase()}</span></p>
-          <p style="color:#8B1A1A;font-style:italic;">With love, Priya 🌸</p>
+          <p style="color:#8B1A1A;font-style:italic;">With love, True Spark Team 🌸</p>
         </div>
       </div>`,
   });

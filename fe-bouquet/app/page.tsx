@@ -104,7 +104,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { name: 'Anjali R.', review: 'Ordered a saree bouquet for my friend\'s baby shower. It was absolutely stunning! The quality was amazing.' },
-              { name: 'Meena S.', review: 'Priya\'s bouquets are a work of art. Gifted one for a wedding — everyone was in awe. Will order again!' },
+              { name: 'Meena S.', review: 'True Spark\'s designs are a work of art. Gifted one for a wedding — everyone was in awe. Will order again!' },
               { name: 'Divya K.', review: 'Loved the packaging and the saree quality. Fast delivery and very responsive. Highly recommend!' },
             ].map((t) => (
               <div key={t.name} className="card p-6">

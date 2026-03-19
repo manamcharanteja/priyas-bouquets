@@ -25,7 +25,7 @@ export default function Dashboard() {
     <div>
       <div className="mb-8">
         <h1 className="font-serif text-2xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-400 text-sm mt-1">Welcome back, Priya 🌸</p>
+        <p className="text-gray-400 text-sm mt-1">Welcome back to True Spark 🌸</p>
       </div>
 
       {/* Stats */}

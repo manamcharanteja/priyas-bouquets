@@ -48,7 +48,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-amber-200 text-sm">
                 <Instagram size={16} />
-                @priyasbouquets
+                @truespark_official
               </div>
             </div>
           </div>
