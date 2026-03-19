@@ -9,10 +9,9 @@ const {
 
 const router = express.Router();
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+const razorpay = (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_ID !== 'rzp_test_REPLACE_ME')
+  ? new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_KEY_SECRET })
+  : null;
 
 // POST /api/payment/create-order
 router.post('/create-order', async (req, res) => {
@@ -23,6 +22,7 @@ router.post('/create-order', async (req, res) => {
       currency: 'INR',
       receipt: `receipt_${Date.now()}`,
     };
+    if (!razorpay) return res.status(503).json({ message: 'Payment not configured yet' });
     const razorpayOrder = await razorpay.orders.create(options);
     res.json(razorpayOrder);
   } catch (err) {
